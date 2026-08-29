@@ -3,10 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>第1時｜頂点で決まる最大・最小</title>
+<title>第1時｜不等式の表す領域</title>
 <script src="https://www.geogebra.org/apps/deployggb.js"></script>
 <style>
-
   :root{
     --brown:#B5651D; --orange:#D89A32; --deep:#8B4A15;
     --ink:#222222; --muted:#6B6257; --paper:#FFFFFF; --tint:#FDF3E3;
@@ -59,93 +58,110 @@
   footer{padding:12px 22px 16px;font-size:12.5px;color:var(--muted);border-top:1px solid #EADFCB}
   code{background:#F2EAE0;padding:1px 5px;border-radius:2px;font-size:.94em}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
-
 </style>
 </head>
 <body>
 <div class="sheet">
   <header>
     <p class="eyebrow">第 1 時</p>
-    <h1>a, p, q を動かしてみる</h1>
-    <div class="steps"><span class="on">① 予想する</span><span id="s2">② 動かして確かめる</span><span>③ 理由を言葉にする</span></div>
+    <h1>どちら側かを目で確かめる</h1>
+    <div class="steps"><span class="on" id="s1">① 予想する</span><span id="s2">② 操作して確かめる</span><span id="s3">③ 理由を言葉にする</span></div>
   </header>
 
   <main>
     <aside>
-      <h2>動かすもの</h2>
-      <p class="q">スライダーは画面の左上にあります。ボタンで自動的に動きます。</p>
+      <h2>調べる不等式</h2>
+      <p class="q">赤い点をドラッグすると、代入した結果が画面に出ます。教科書 p.113〜115 の例です。</p>
       <div class="cases" id="cases"></div>
-      <p class="hint">p は左右、q は上下、a は開き方を変えます。1 つずつ試してください。a を負にすると、画面の文が「最小値」から「最大値」に変わります。</p>
+      <p class="hint">
+        境界は、<code>&lt;</code> <code>&gt;</code> なら破線、<code>≦</code> <code>≧</code> なら実線で描かれます。
+        入力欄に自分で <code>y &gt; -x + 2</code> のように打ち込んでも構いません。
+      </p>
     </aside>
 
     <div class="stage">
       <div class="gate" id="gate">
-        <p>a を負にすると、最小値と最大値はどう入れかわると思いますか。</p>
-        <small>予想をノートに書いてから開いてください。</small>
+        <p>どこが塗られるか、ノートに予想を書きましたか。</p>
+        <small>先に画面を見ると、考える機会がなくなります。</small>
         <button id="gateBtn">予想を書いた。確認する</button>
       </div>
       <div class="ggb-frame"><div id="ggb"></div></div>
     </div>
   </main>
 
-  <footer>頂点の y 座標が、そのまま最大値または最小値になる。</footer>
+  <footer>境界で平面は 2 つに分かれる。どちらが領域かは、代表点を 1 つ代入して決める。</footer>
 </div>
 
 <script>
 var api = null;
 
 // GeoGebra の SetColor は 0〜1 の小数で指定する（0〜255 だと白飛びする）
-var BLUE   = "0.12, 0.31, 0.85";
-var RED    = "0.80, 0.13, 0.13";
-var ORANGE = "0.85, 0.60, 0.20";
-var GREY   = "0.55, 0.55, 0.55";
+var BLUE  = "0.12, 0.31, 0.85";
+var RED   = "0.80, 0.13, 0.13";
+var DEEP  = "0.55, 0.29, 0.08";
+
+var CASES = [
+  { label: "y > −x + 2　（p.113）",
+    ineq: "ineq: y > -x + 2",
+    point: "P=(3,3)",
+    test: "y(P) > -x(P) + 2",
+    view: [-3,-3,6,6], anchor: [-2.7, 5.4] },
+  { label: "y < −x + 2　（p.114）",
+    ineq: "ineq: y < -x + 2",
+    point: "P=(3,-1)",
+    test: "y(P) < -x(P) + 2",
+    view: [-3,-3,6,6], anchor: [-2.7, 5.4] },
+  { label: "例14　2x + y − 3 ≦ 0",
+    ineq: "ineq: 2*x + y - 3 <= 0",
+    point: "P=(0,0)",
+    test: "2*x(P) + y(P) - 3 <= 0",
+    view: [-3,-4,6,6], anchor: [-2.7, 5.4] },
+  { label: "例15　x > 2",
+    ineq: "ineq: x > 2",
+    point: "P=(3,1)",
+    test: "x(P) > 2",
+    view: [-3,-4,6,6], anchor: [-2.7, 5.4] },
+  { label: "練習37(2)　2x − 3y + 6 > 0",
+    ineq: "ineq: 2*x - 3*y + 6 > 0",
+    point: "P=(0,0)",
+    test: "2*x(P) - 3*y(P) + 6 > 0",
+    view: [-6,-5,6,6], anchor: [-5.6, 5.4] }
+];
 
 function run(lines){ lines.forEach(function(c){ try{ api.evalCommand(c); }catch(e){} }); }
 function drop(names){ names.forEach(function(n){ try{ api.deleteObject(n); }catch(e){} }); }
 
-
-function start(){
+function load(i){
+  if(!api) return;
+  var c = CASES[i];
+  drop(["judge","ineq","P"]);
   run([
-    "ZoomIn(-7, -8, 8, 8)",
-    "a = Slider(-3, 3, 0.25)", "SetValue(a, 1)", "SetCoords(a, 25, 30)", "SetFixed(a, true)",
-    "p = Slider(-4, 4, 0.5)", "SetValue(p, 1)", "SetCoords(p, 25, 80)", "SetFixed(p, true)",
-    "q = Slider(-5, 5, 0.5)", "SetValue(q, -3)", "SetCoords(q, 25, 130)", "SetFixed(q, true)",
-    "f(x) = a (x - p)^2 + q",
-    "SetColor(f, " + BLUE + ")", "SetLineThickness(f, 7)", "ShowLabel(f, false)",
-    "V = (p, q)", "SetColor(V, " + RED + ")", "SetPointSize(V, 8)", "SetFixed(V, true)",
-    "axis: x = p", "SetColor(axis, " + GREY + ")", "SetLineThickness(axis, 3)",
-    "SetLineStyle(axis, 2)", "ShowLabel(axis, false)",
-    'info = "頂点 (" + p + ", " + q + ")"',
-    "SetCoords(info, -6.6, 7.2)", "SetColor(info, " + RED + ")",
-    'res = If(a > 0, "x = " + p + " で最小値 " + q + "。最大値はない。", If(a < 0, "x = " + p + " で最大値 " + q + "。最小値はない。", "a = 0 では2次関数にならない"))',
-    "SetCoords(res, -6.6, 6.2)", "SetColor(res, " + BLUE + ")"
+    "ZoomIn(" + c.view.join(",") + ")",
+    c.ineq,
+    "SetColor(ineq, " + BLUE + ")",
+    "SetFilling(ineq, 0.22)",
+    "SetLineThickness(ineq, 6)",
+    "ShowLabel(ineq, false)",
+    c.point,
+    "SetColor(P, " + RED + ")",
+    "SetPointSize(P, 8)",
+    'judge = If(' + c.test + ', "○ 成り立つ → この側が領域", "× 成り立たない → 反対側")',
+    "SetCoords(judge, " + c.anchor.join(", ") + ")",
+    "SetColor(judge, " + DEEP + ")"
   ]);
+  document.querySelectorAll("#cases button").forEach(function(b, j){
+    b.setAttribute("aria-pressed", j === i ? "true" : "false");
+  });
   document.getElementById("s2").classList.add("on");
 }
-var MOVES = [
-  { label: "p を動かす（左右）", name: "p" },
-  { label: "q を動かす（上下）", name: "q" },
-  { label: "a を動かす（開き方）", name: "a" },
-  { label: "a を負にしてみる", set: "SetValue(a, -1)" },
-  { label: "はじめに戻す", set: null }
-];
-MOVES.forEach(function(m, i){
+
+CASES.forEach(function(c, i){
   var b = document.createElement("button");
-  b.textContent = m.label; b.setAttribute("aria-pressed", "false");
-  b.addEventListener("click", function(){
-    if(!api) return;
-    api.stopAnimation();
-    ["a","p","q"].forEach(function(n){ try{ api.setAnimating(n, false); }catch(e){} });
-    if(m.name){ try{ api.setAnimating(m.name, true); api.startAnimation(); }catch(e){} }
-    else if(m.set){ run([m.set]); }
-    else { run(["SetValue(a, 1)", "SetValue(p, 1)", "SetValue(q, -3)"]); }
-    document.querySelectorAll("#cases button").forEach(function(x, j){
-      x.setAttribute("aria-pressed", j === i ? "true" : "false"); });
-    document.getElementById("s2").classList.add("on");
-  });
+  b.textContent = c.label;
+  b.setAttribute("aria-pressed", "false");
+  b.addEventListener("click", function(){ load(i); });
   document.getElementById("cases").appendChild(b);
 });
-
 
 document.getElementById("gateBtn").addEventListener("click", function(){
   document.getElementById("gate").classList.add("hidden");
@@ -160,7 +176,7 @@ var params = {
   perspective: "G", showResetIcon: false, enableRightClick: false,
   enableShiftDragZoom: true, language: "ja",
   scaleContainerClass: "ggb-frame", allowUpscale: true, autoHeight: false,
-  appletOnLoad: function(a){ api = a; start(); }
+  appletOnLoad: function(a){ api = a; load(0); }
 };
 window.addEventListener("load", function(){ new GGBApplet(params, true).inject("ggb"); });
 </script>

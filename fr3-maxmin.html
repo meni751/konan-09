@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>第2時｜領域における最大・最小</title>
+<script src="https://www.geogebra.org/apps/deployggb.js"></script>
+<style>
+  :root{
+    --brown:#B5651D; --orange:#D89A32; --deep:#8B4A15;
+    --ink:#222222; --muted:#6B6257; --paper:#FFFFFF; --tint:#FDF3E3;
+    --blue:#1E4FD8; --red:#CC2222;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{background:var(--brown);
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic Medium","Yu Gothic","Noto Sans JP","Meiryo",sans-serif;
+    color:var(--ink);line-height:1.7;padding:10px}
+  .sheet{background:var(--paper);border-radius:4px;max-width:1100px;margin:0 auto;overflow:hidden}
+  header{padding:18px 22px 14px;border-bottom:3px solid var(--orange)}
+  .eyebrow{font-size:13px;letter-spacing:.22em;color:var(--deep);font-weight:700;margin:0 0 4px}
+  h1{font-size:26px;margin:0;font-weight:800;letter-spacing:.02em}
+  .steps{display:flex;margin:14px 0 0;font-size:13px;font-weight:700}
+  .steps span{flex:1;text-align:center;padding:7px 4px;background:#F2EAE0;color:var(--muted);border-right:2px solid var(--paper)}
+  .steps span:last-child{border-right:0}
+  .steps span.on{background:var(--orange);color:#fff}
+  main{display:grid;grid-template-columns:300px 1fr}
+  @media (max-width:900px){main{grid-template-columns:1fr}}
+  aside{padding:20px;background:var(--tint);border-right:1px solid #EADFCB}
+  @media (max-width:900px){aside{border-right:0;border-bottom:1px solid #EADFCB}}
+  h2{font-size:15px;margin:0 0 6px;letter-spacing:.1em;color:var(--deep)}
+  h2+p{margin:0 0 14px;font-size:14px;color:var(--muted)}
+  .cases{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+  .cases button{font:inherit;font-size:15px;font-weight:700;text-align:left;padding:11px 13px;cursor:pointer;
+    background:#fff;color:var(--ink);border:2px solid #E2D3BC;border-radius:3px;transition:.15s}
+  .cases button:hover{border-color:var(--orange)}
+  .cases button[aria-pressed="true"]{background:var(--deep);border-color:var(--deep);color:#fff}
+  .cases button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+  .kbar{display:flex;gap:8px}
+  .kbar button{flex:1;font:inherit;font-size:14px;font-weight:700;padding:10px 6px;cursor:pointer;
+    background:var(--orange);color:#fff;border:0;border-radius:3px}
+  .kbar button:hover{background:var(--deep)}
+  .kbar button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+  .hint{margin:18px 0 0;font-size:13px;color:var(--muted);line-height:1.75}
+  .stage{position:relative;padding:16px}
+  .ggb-frame{width:100%}
+  .gate{position:absolute;inset:16px;background:var(--paper);z-index:5;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;padding:30px;border:2px dashed var(--orange)}
+  .gate.hidden{display:none}
+  .gate p{font-size:20px;font-weight:800;margin:0 0 6px;max-width:28em}
+  .gate small{display:block;font-size:14px;color:var(--muted);margin-bottom:26px;font-weight:400}
+  .gate button{font:inherit;font-size:16px;font-weight:800;padding:14px 30px;cursor:pointer;
+    background:var(--orange);color:#fff;border:0;border-radius:3px}
+  .gate button:hover{background:var(--deep)}
+  footer{padding:12px 22px 16px;font-size:12.5px;color:var(--muted);border-top:1px solid #EADFCB}
+  code{background:#F2EAE0;padding:1px 5px;border-radius:2px;font-size:.94em}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header>
+    <p class="eyebrow">第 2 時</p>
+    <h1>領域における最大・最小</h1>
+    <div class="steps"><span class="on">① 予想する</span><span id="s2">② 直線を動かす</span><span>③ 理由を言葉にする</span></div>
+  </header>
+
+  <main>
+    <aside>
+      <h2>領域</h2>
+      <p>x ≧ 0, y ≧ 0, 2x + y ≦ 8, 2x + 3y ≦ 12<br>（教科書 p.118 応用例題 7）</p>
+      <h2>動かす直線</h2>
+      <p>目的の式を k とおいた直線</p>
+      <div class="cases" id="cases"></div>
+      <div class="kbar">
+        <button id="play">k を動かす</button>
+        <button id="stop">止める</button>
+      </div>
+      <p class="hint">
+        直線が領域から出る直前で止めてください。そのとき直線は領域の<strong>どこ</strong>に触れていますか。
+        スライダー <code>k</code> は左上にあります。直接ドラッグしても動きます。
+      </p>
+    </aside>
+
+    <div class="stage">
+      <div class="gate" id="gate">
+        <p>領域の中で x + y はどこまで大きくできると思いますか。</p>
+        <small>まず値を予想してノートに書いてから開いてください。</small>
+        <button id="gateBtn">予想を書いた。確認する</button>
+      </div>
+      <div class="ggb-frame"><div id="ggb"></div></div>
+    </div>
+  </main>
+
+  <footer>最大・最小は、直線が領域と共有点をもつ限界の位置で起こる。どの頂点になるかは、傾きで決まる。</footer>
+</div>
+
+<script>
+var api = null;
+
+var CASES = [
+  { label: "x + y = k　（応用例題7）", line: "g: x + y = k", note: "頂点 (3, 2) で最大" },
+  { label: "5x + y = k　（p.118【?】）", line: "g: 5*x + y = k", note: "頂点 (4, 0) で最大" },
+  { label: "x − y = k　（練習43(2)）", line: "g: x - y = k", note: "傾きが変わると頂点も変わる" }
+];
+
+function run(lines){ lines.forEach(function(c){ try{ api.evalCommand(c); }catch(e){} }); }
+function drop(names){ names.forEach(function(n){ try{ api.deleteObject(n); }catch(e){} }); }
+
+// GeoGebra の SetColor は 0〜1 の小数で指定する（0〜255 だと白飛びする）
+var BLUE   = "0.12, 0.31, 0.85";
+var ORANGE = "0.85, 0.60, 0.20";
+
+function base(){
+  run([
+    "ZoomIn(-2.5, -2.5, 9, 9.5)",
+    "r: x >= 0 && y >= 0 && 2*x + y <= 8 && 2*x + 3*y <= 12",
+    "SetColor(r, " + ORANGE + ")",
+    "SetFilling(r, 0.45)",
+    "SetLineThickness(r, 5)",
+    "ShowLabel(r, false)",
+    "k = Slider(0, 12, 0.25)",
+    "SetValue(k, 2)",
+    "SetCoords(k, 25, 30)",
+    "SetFixed(k, true)"
+  ]);
+}
+
+function load(i){
+  if(!api) return;
+  var c = CASES[i];
+  drop(["readout","g"]);
+  run([
+    c.line,
+    "SetColor(g, " + BLUE + ")",
+    "SetLineThickness(g, 7)",
+    "ShowLabel(g, false)",
+    'readout = "k = " + k',
+    "SetCoords(readout, -2.1, 9.0)",
+    "SetColor(readout, " + BLUE + ")"
+  ]);
+  document.querySelectorAll("#cases button").forEach(function(b, j){
+    b.setAttribute("aria-pressed", j === i ? "true" : "false");
+  });
+  document.getElementById("s2").classList.add("on");
+}
+
+CASES.forEach(function(c, i){
+  var b = document.createElement("button");
+  b.textContent = c.label;
+  b.setAttribute("aria-pressed", "false");
+  b.title = c.note;
+  b.addEventListener("click", function(){ load(i); });
+  document.getElementById("cases").appendChild(b);
+});
+
+document.getElementById("play").addEventListener("click", function(){
+  if(!api) return;
+  api.setAnimating("k", true); api.startAnimation();
+});
+document.getElementById("stop").addEventListener("click", function(){
+  if(!api) return;
+  api.stopAnimation();
+});
+document.getElementById("gateBtn").addEventListener("click", function(){
+  document.getElementById("gate").classList.add("hidden");
+  document.getElementById("s2").classList.add("on");
+});
+
+var params = {
+  appName: "classic",
+  width: 780, height: 520,
+  showToolBar: false, showMenuBar: false, showAlgebraInput: true,
+  algebraInputPosition: "bottom",
+  perspective: "G", showResetIcon: false, enableRightClick: false,
+  enableShiftDragZoom: true, language: "ja",
+  scaleContainerClass: "ggb-frame", allowUpscale: true, autoHeight: false,
+  appletOnLoad: function(a){ api = a; base(); load(0); }
+};
+window.addEventListener("load", function(){ new GGBApplet(params, true).inject("ggb"); });
+</script>
+</body>
+</html>

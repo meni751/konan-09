@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>第1時｜頂点で決まる最大・最小</title>
+<title>第4時｜2次関数の決定</title>
 <script src="https://www.geogebra.org/apps/deployggb.js"></script>
 <style>
 
@@ -65,22 +65,22 @@
 <body>
 <div class="sheet">
   <header>
-    <p class="eyebrow">第 1 時</p>
-    <h1>a, p, q を動かしてみる</h1>
+    <p class="eyebrow">第 4 時</p>
+    <h1>頂点と通る点から決める</h1>
     <div class="steps"><span class="on">① 予想する</span><span id="s2">② 動かして確かめる</span><span>③ 理由を言葉にする</span></div>
   </header>
 
   <main>
     <aside>
       <h2>動かすもの</h2>
-      <p class="q">スライダーは画面の左上にあります。ボタンで自動的に動きます。</p>
+      <p class="q">赤い点が頂点、オレンジの点が通る点です。どちらもドラッグできます。</p>
       <div class="cases" id="cases"></div>
-      <p class="hint">p は左右、q は上下、a は開き方を変えます。1 つずつ試してください。a を負にすると、画面の文が「最小値」から「最大値」に変わります。</p>
+      <p class="hint">頂点を固定したまま通る点だけを動かすと、式の中の a だけが変わります。a が開き方を決めていることを確かめてください。</p>
     </aside>
 
     <div class="stage">
       <div class="gate" id="gate">
-        <p>a を負にすると、最小値と最大値はどう入れかわると思いますか。</p>
+        <p>頂点をそのままにして通る点だけ動かすと、式の何が変わると思いますか。</p>
         <small>予想をノートに書いてから開いてください。</small>
         <button id="gateBtn">予想を書いた。確認する</button>
       </div>
@@ -88,7 +88,7 @@
     </div>
   </main>
 
-  <footer>頂点の y 座標が、そのまま最大値または最小値になる。</footer>
+  <footer>頂点が同じでも、通る点がちがえば別の放物線になる。</footer>
 </div>
 
 <script>
@@ -106,39 +106,32 @@ function drop(names){ names.forEach(function(n){ try{ api.deleteObject(n); }catc
 
 function start(){
   run([
-    "ZoomIn(-7, -8, 8, 8)",
-    "a = Slider(-3, 3, 0.25)", "SetValue(a, 1)", "SetCoords(a, 25, 30)", "SetFixed(a, true)",
-    "p = Slider(-4, 4, 0.5)", "SetValue(p, 1)", "SetCoords(p, 25, 80)", "SetFixed(p, true)",
-    "q = Slider(-5, 5, 0.5)", "SetValue(q, -3)", "SetCoords(q, 25, 130)", "SetFixed(q, true)",
-    "f(x) = a (x - p)^2 + q",
+    "ZoomIn(-6, -8, 8, 9)",
+    "V = (2, 5)", "SetColor(V, " + RED + ")", "SetPointSize(V, 9)",
+    "SetCaption(V, \"頂点\")",
+    "A = (-1, -4)", "SetColor(A, " + ORANGE + ")", "SetPointSize(A, 9)",
+    "k = If(x(A) == x(V), 1, (y(A) - y(V)) / (x(A) - x(V))^2)",
+    "ShowLabel(k, false)",
+    "f(x) = k (x - x(V))^2 + y(V)",
     "SetColor(f, " + BLUE + ")", "SetLineThickness(f, 7)", "ShowLabel(f, false)",
-    "V = (p, q)", "SetColor(V, " + RED + ")", "SetPointSize(V, 8)", "SetFixed(V, true)",
-    "axis: x = p", "SetColor(axis, " + GREY + ")", "SetLineThickness(axis, 3)",
-    "SetLineStyle(axis, 2)", "ShowLabel(axis, false)",
-    'info = "頂点 (" + p + ", " + q + ")"',
-    "SetCoords(info, -6.6, 7.2)", "SetColor(info, " + RED + ")",
-    'res = If(a > 0, "x = " + p + " で最小値 " + q + "。最大値はない。", If(a < 0, "x = " + p + " で最大値 " + q + "。最小値はない。", "a = 0 では2次関数にならない"))',
-    "SetCoords(res, -6.6, 6.2)", "SetColor(res, " + BLUE + ")"
+    'eq = "y = " + k + "(x - " + x(V) + ")² + " + y(V)',
+    "SetCoords(eq, -5.6, 8.2)", "SetColor(eq, " + BLUE + ")",
+    'ainfo = "a = " + k',
+    "SetCoords(ainfo, -5.6, 7.2)", "SetColor(ainfo, " + RED + ")"
   ]);
   document.getElementById("s2").classList.add("on");
 }
-var MOVES = [
-  { label: "p を動かす（左右）", name: "p" },
-  { label: "q を動かす（上下）", name: "q" },
-  { label: "a を動かす（開き方）", name: "a" },
-  { label: "a を負にしてみる", set: "SetValue(a, -1)" },
-  { label: "はじめに戻す", set: null }
+var SETS = [
+  { label: "例題5 に戻す", pts: ["V = (2, 5)", "A = (-1, -4)"] },
+  { label: "練習24(1) の条件にする", pts: ["V = (-2, 4)", "A = (-4, 2)"] },
+  { label: "頂点を原点にする", pts: ["V = (0, 0)", "A = (2, 4)"] }
 ];
-MOVES.forEach(function(m, i){
+SETS.forEach(function(m, i){
   var b = document.createElement("button");
   b.textContent = m.label; b.setAttribute("aria-pressed", "false");
   b.addEventListener("click", function(){
     if(!api) return;
-    api.stopAnimation();
-    ["a","p","q"].forEach(function(n){ try{ api.setAnimating(n, false); }catch(e){} });
-    if(m.name){ try{ api.setAnimating(m.name, true); api.startAnimation(); }catch(e){} }
-    else if(m.set){ run([m.set]); }
-    else { run(["SetValue(a, 1)", "SetValue(p, 1)", "SetValue(q, -3)"]); }
+    run(m.pts);
     document.querySelectorAll("#cases button").forEach(function(x, j){
       x.setAttribute("aria-pressed", j === i ? "true" : "false"); });
     document.getElementById("s2").classList.add("on");

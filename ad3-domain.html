@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>第1時｜頂点で決まる最大・最小</title>
+<title>第3時｜定義域に制限があるとき</title>
 <script src="https://www.geogebra.org/apps/deployggb.js"></script>
 <style>
 
@@ -65,22 +65,22 @@
 <body>
 <div class="sheet">
   <header>
-    <p class="eyebrow">第 1 時</p>
-    <h1>a, p, q を動かしてみる</h1>
+    <p class="eyebrow">第 3 時</p>
+    <h1>定義域を動かしてみる</h1>
     <div class="steps"><span class="on">① 予想する</span><span id="s2">② 動かして確かめる</span><span>③ 理由を言葉にする</span></div>
   </header>
 
   <main>
     <aside>
       <h2>動かすもの</h2>
-      <p class="q">スライダーは画面の左上にあります。ボタンで自動的に動きます。</p>
+      <p class="q">y = x² − 4x + 1 の定義域を 0 ≦ x ≦ t として、右端 t を動かします。</p>
       <div class="cases" id="cases"></div>
-      <p class="hint">p は左右、q は上下、a は開き方を変えます。1 つずつ試してください。a を負にすると、画面の文が「最小値」から「最大値」に変わります。</p>
+      <p class="hint">オレンジの点線が軸 x = 2 です。t がこの線をまたぐ瞬間に、最小値の場所が変わります。そこで止めてみてください。</p>
     </aside>
 
     <div class="stage">
       <div class="gate" id="gate">
-        <p>a を負にすると、最小値と最大値はどう入れかわると思いますか。</p>
+        <p>右端 t を小さくしていくと、最小値はどこに移ると思いますか。</p>
         <small>予想をノートに書いてから開いてください。</small>
         <button id="gateBtn">予想を書いた。確認する</button>
       </div>
@@ -88,7 +88,7 @@
     </div>
   </main>
 
-  <footer>頂点の y 座標が、そのまま最大値または最小値になる。</footer>
+  <footer>軸が定義域の中にあるかどうかで、答えの場所が変わる。</footer>
 </div>
 
 <script>
@@ -106,44 +106,45 @@ function drop(names){ names.forEach(function(n){ try{ api.deleteObject(n); }catc
 
 function start(){
   run([
-    "ZoomIn(-7, -8, 8, 8)",
-    "a = Slider(-3, 3, 0.25)", "SetValue(a, 1)", "SetCoords(a, 25, 30)", "SetFixed(a, true)",
-    "p = Slider(-4, 4, 0.5)", "SetValue(p, 1)", "SetCoords(p, 25, 80)", "SetFixed(p, true)",
-    "q = Slider(-5, 5, 0.5)", "SetValue(q, -3)", "SetCoords(q, 25, 130)", "SetFixed(q, true)",
-    "f(x) = a (x - p)^2 + q",
-    "SetColor(f, " + BLUE + ")", "SetLineThickness(f, 7)", "ShowLabel(f, false)",
-    "V = (p, q)", "SetColor(V, " + RED + ")", "SetPointSize(V, 8)", "SetFixed(V, true)",
-    "axis: x = p", "SetColor(axis, " + GREY + ")", "SetLineThickness(axis, 3)",
+    "ZoomIn(-4, -6, 8, 8)",
+    "t = Slider(-3, 7, 0.25)", "SetValue(t, 3)", "SetCoords(t, 25, 30)", "SetFixed(t, true)",
+    "g(x) = x^2 - 4x + 1",
+    "SetColor(g, 0.65, 0.65, 0.65)", "SetLineThickness(g, 3)",
+    "SetLineStyle(g, 2)", "ShowLabel(g, false)",
+    "h = Function(x^2 - 4x + 1, 0, t)",
+    "SetColor(h, " + BLUE + ")", "SetLineThickness(h, 9)", "ShowLabel(h, false)",
+    "L = (0, 1)", "SetColor(L, " + RED + ")", "SetPointSize(L, 7)", "SetFixed(L, true)",
+    "R = (t, t^2 - 4t + 1)", "SetColor(R, " + RED + ")", "SetPointSize(R, 7)", "SetFixed(R, true)",
+    "axis: x = 2", "SetColor(axis, " + ORANGE + ")", "SetLineThickness(axis, 4)",
     "SetLineStyle(axis, 2)", "ShowLabel(axis, false)",
-    'info = "頂点 (" + p + ", " + q + ")"',
-    "SetCoords(info, -6.6, 7.2)", "SetColor(info, " + RED + ")",
-    'res = If(a > 0, "x = " + p + " で最小値 " + q + "。最大値はない。", If(a < 0, "x = " + p + " で最大値 " + q + "。最小値はない。", "a = 0 では2次関数にならない"))',
-    "SetCoords(res, -6.6, 6.2)", "SetColor(res, " + BLUE + ")"
+    'dom = "定義域　0 ≦ x ≦ " + t',
+    "SetCoords(dom, -3.6, 7.2)", "SetColor(dom, " + BLUE + ")",
+    'pos = If(t > 2, "軸 x = 2 は定義域の中", "軸 x = 2 は定義域の外")',
+    "SetCoords(pos, -3.6, 6.2)", "SetColor(pos, " + RED + ")",
+    'mn = If(t > 2, "最小値は頂点の -3", "最小値は右端の " + (t^2 - 4t + 1))',
+    "SetCoords(mn, -3.6, 5.2)", "SetColor(mn, " + ORANGE + ")"
   ]);
   document.getElementById("s2").classList.add("on");
 }
 var MOVES = [
-  { label: "p を動かす（左右）", name: "p" },
-  { label: "q を動かす（上下）", name: "q" },
-  { label: "a を動かす（開き方）", name: "a" },
-  { label: "a を負にしてみる", set: "SetValue(a, -1)" },
-  { label: "はじめに戻す", set: null }
+  { label: "右端 t を動かす", name: "t" },
+  { label: "t = 3 に戻す", set: ["SetValue(t, 3)"] },
+  { label: "t = 1 にする（軸が外）", set: ["SetValue(t, 1)"] }
 ];
 MOVES.forEach(function(m, i){
-  var b = document.createElement("button");
-  b.textContent = m.label; b.setAttribute("aria-pressed", "false");
-  b.addEventListener("click", function(){
+  var btn = document.createElement("button");
+  btn.textContent = m.label; btn.setAttribute("aria-pressed", "false");
+  btn.addEventListener("click", function(){
     if(!api) return;
     api.stopAnimation();
-    ["a","p","q"].forEach(function(n){ try{ api.setAnimating(n, false); }catch(e){} });
-    if(m.name){ try{ api.setAnimating(m.name, true); api.startAnimation(); }catch(e){} }
-    else if(m.set){ run([m.set]); }
-    else { run(["SetValue(a, 1)", "SetValue(p, 1)", "SetValue(q, -3)"]); }
+    try{ api.setAnimating("t", false); }catch(e){}
+    if(m.name){ try{ api.setAnimating("t", true); api.startAnimation(); }catch(e){} }
+    else { run(m.set); }
     document.querySelectorAll("#cases button").forEach(function(x, j){
       x.setAttribute("aria-pressed", j === i ? "true" : "false"); });
     document.getElementById("s2").classList.add("on");
   });
-  document.getElementById("cases").appendChild(b);
+  document.getElementById("cases").appendChild(btn);
 });
 
 
