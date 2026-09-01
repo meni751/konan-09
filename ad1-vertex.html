@@ -106,7 +106,8 @@ function drop(names){ names.forEach(function(n){ try{ api.deleteObject(n); }catc
 
 function start(){
   run([
-    "ZoomIn(-7, -8, 8, 8)",
+    "ZoomIn(-9, -6, 9, 6)",
+    "SetAxesRatio(1,1)",
     "a = Slider(-3, 3, 0.25)", "SetValue(a, 1)", "SetCoords(a, 25, 30)", "SetFixed(a, true)",
     "p = Slider(-4, 4, 0.5)", "SetValue(p, 1)", "SetCoords(p, 25, 80)", "SetFixed(p, true)",
     "q = Slider(-5, 5, 0.5)", "SetValue(q, -3)", "SetCoords(q, 25, 130)", "SetFixed(q, true)",
@@ -116,9 +117,9 @@ function start(){
     "axis: x = p", "SetColor(axis, " + GREY + ")", "SetLineThickness(axis, 3)",
     "SetLineStyle(axis, 2)", "ShowLabel(axis, false)",
     'info = "頂点 (" + p + ", " + q + ")"',
-    "SetCoords(info, -6.6, 7.2)", "SetColor(info, " + RED + ")",
+    "SetCoords(info, -8.6, 5.4)", "SetColor(info, " + RED + ")",
     'res = If(a > 0, "x = " + p + " で最小値 " + q + "。最大値はない。", If(a < 0, "x = " + p + " で最大値 " + q + "。最小値はない。", "a = 0 では2次関数にならない"))',
-    "SetCoords(res, -6.6, 6.2)", "SetColor(res, " + BLUE + ")"
+    "SetCoords(res, -8.6, 4.5)", "SetColor(res, " + BLUE + ")"
   ]);
   document.getElementById("s2").classList.add("on");
 }

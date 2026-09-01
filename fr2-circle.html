@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>第2時｜円を境界線とする領域</title>
+<title>第2時｜円を境界線とする領域・連立不等式</title>
 <script src="https://www.geogebra.org/apps/deployggb.js"></script>
 <style>
 
@@ -106,7 +106,8 @@ function drop(names){ names.forEach(function(n){ try{ api.deleteObject(n); }catc
 
 function start(){
   run([
-    "ZoomIn(-6, -6, 6, 6)",
+    "ZoomIn(-9, -6, 9, 6)",
+    "SetAxesRatio(1,1)",
     "P = (0, 0)",
     "SetColor(P, " + RED + ")",
     "SetPointSize(P, 8)"
@@ -118,27 +119,27 @@ var CASES = [
   { label: "例16　x²+(y−2)² ≦ 4",
     ineq: "ineq: x^2 + (y-2)^2 <= 4",
     test: "x(P)^2 + (y(P)-2)^2 <= 4",
-    view: [-5,-3,5,7] },
+    view: [-6,-1,6,7] },
   { label: "練習38(1)　x²+y² < 4",
     ineq: "ineq: x^2 + y^2 < 4",
     test: "x(P)^2 + y(P)^2 < 4",
-    view: [-6,-6,6,6] },
+    view: [-6,-4,6,4] },
   { label: "練習38(2)　x²+y² ≧ 6",
     ineq: "ineq: x^2 + y^2 >= 6",
     test: "x(P)^2 + y(P)^2 >= 6",
-    view: [-6,-6,6,6] },
+    view: [-6,-4,6,4] },
   { label: "練習38(4)　x²+y²+4x ≦ 0",
     ineq: "ineq: x^2 + y^2 + 4*x <= 0",
     test: "x(P)^2 + y(P)^2 + 4*x(P) <= 0",
-    view: [-7,-5,4,5] },
+    view: [-9,-4,9,8] },
   { label: "例17　連立（p.116）",
     ineq: "ineq: x + y - 2 > 0 && x - y < 0",
     test: "x(P) + y(P) - 2 > 0 && x(P) - y(P) < 0",
-    view: [-3,-3,6,6] },
+    view: [-4.5,-3,7.5,5] },
   { label: "練習40(1)　円と直線の連立",
     ineq: "ineq: x^2 + y^2 < 25 && 3*x - y + 3 < 0",
     test: "x(P)^2 + y(P)^2 < 25 && 3*x(P) - y(P) + 3 < 0",
-    view: [-7,-7,7,7] }
+    view: [-10.5,-7,10.5,7] }
 ];
 
 function load(i){
@@ -147,6 +148,7 @@ function load(i){
   drop(["judge","ineq"]);
   run([
     "ZoomIn(" + c.view.join(",") + ")",
+    "SetAxesRatio(1,1)",
     c.ineq,
     "SetColor(ineq, " + BLUE + ")",
     "SetFilling(ineq, 0.22)",

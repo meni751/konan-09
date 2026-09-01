@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>第2時｜領域における最大・最小</title>
+<title>第3時｜領域と最大・最小</title>
 <script src="https://www.geogebra.org/apps/deployggb.js"></script>
 <style>
   :root{
@@ -60,7 +60,7 @@
 <body>
 <div class="sheet">
   <header>
-    <p class="eyebrow">第 2 時</p>
+    <p class="eyebrow">第 3 時</p>
     <h1>領域における最大・最小</h1>
     <div class="steps"><span class="on">① 予想する</span><span id="s2">② 直線を動かす</span><span>③ 理由を言葉にする</span></div>
   </header>
@@ -99,9 +99,15 @@
 var api = null;
 
 var CASES = [
-  { label: "x + y = k　（応用例題7）", line: "g: x + y = k", note: "頂点 (3, 2) で最大" },
-  { label: "5x + y = k　（p.118【?】）", line: "g: 5*x + y = k", note: "頂点 (4, 0) で最大" },
-  { label: "x − y = k　（練習43(2)）", line: "g: x - y = k", note: "傾きが変わると頂点も変わる" }
+  { label: "x + y = k　（応用例題7）", line: "g: x + y = k",
+    kmin: -2, kmax: 8, kstep: 0.25, kstart: 2,
+    note: "頂点 (3, 2) で最大値 5、原点で最小値 0" },
+  { label: "5x + y = k　（p.118【?】）", line: "g: 5*x + y = k",
+    kmin: -3, kmax: 24, kstep: 0.5, kstart: 4,
+    note: "頂点 (4, 0) で最大値 20" },
+  { label: "x − y = k　（傾きを変えると）", line: "g: x - y = k",
+    kmin: -7, kmax: 7, kstep: 0.25, kstart: 0,
+    note: "(4, 0) で最大値 4、(0, 4) で最小値 −4" }
 ];
 
 function run(lines){ lines.forEach(function(c){ try{ api.evalCommand(c); }catch(e){} }); }
@@ -113,30 +119,31 @@ var ORANGE = "0.85, 0.60, 0.20";
 
 function base(){
   run([
-    "ZoomIn(-2.5, -2.5, 9, 9.5)",
+    "ZoomIn(-3, -2, 15, 10)",
+    "SetAxesRatio(1,1)",
     "r: x >= 0 && y >= 0 && 2*x + y <= 8 && 2*x + 3*y <= 12",
     "SetColor(r, " + ORANGE + ")",
     "SetFilling(r, 0.45)",
     "SetLineThickness(r, 5)",
-    "ShowLabel(r, false)",
-    "k = Slider(0, 12, 0.25)",
-    "SetValue(k, 2)",
-    "SetCoords(k, 25, 30)",
-    "SetFixed(k, true)"
+    "ShowLabel(r, false)"
   ]);
 }
 
 function load(i){
   if(!api) return;
   var c = CASES[i];
-  drop(["readout","g"]);
+  drop(["readout","g","k"]);
   run([
+    "k = Slider(" + c.kmin + ", " + c.kmax + ", " + c.kstep + ")",
+    "SetValue(k, " + c.kstart + ")",
+    "SetCoords(k, 25, 30)",
+    "SetFixed(k, true)",
     c.line,
     "SetColor(g, " + BLUE + ")",
     "SetLineThickness(g, 7)",
     "ShowLabel(g, false)",
     'readout = "k = " + k',
-    "SetCoords(readout, -2.1, 9.0)",
+    "SetCoords(readout, -2.6, 9.4)",
     "SetColor(readout, " + BLUE + ")"
   ]);
   document.querySelectorAll("#cases button").forEach(function(b, j){

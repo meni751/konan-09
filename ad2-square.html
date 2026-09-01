@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>第2時｜平方完成して求める</title>
+<title>第1時 自習用｜平方完成して求める</title>
 <script src="https://www.geogebra.org/apps/deployggb.js"></script>
 <style>
 
@@ -65,7 +65,7 @@
 <body>
 <div class="sheet">
   <header>
-    <p class="eyebrow">第 2 時</p>
+    <p class="eyebrow">第 1 時　自習用</p>
     <h1>式を変えても同じグラフ</h1>
     <div class="steps"><span class="on">① 予想する</span><span id="s2">② 動かして確かめる</span><span>③ 理由を言葉にする</span></div>
   </header>
@@ -106,18 +106,19 @@ function drop(names){ names.forEach(function(n){ try{ api.deleteObject(n); }catc
 
 function start(){
   run([
-    "ZoomIn(-8, -8, 8, 9)",
-    "b = Slider(-8, 8, 0.5)", "SetValue(b, -4)", "SetCoords(b, 25, 30)", "SetFixed(b, true)",
-    "c = Slider(-8, 8, 0.5)", "SetValue(c, 3)", "SetCoords(c, 25, 80)", "SetFixed(c, true)",
+    "ZoomIn(-9, -6, 9, 6)",
+    "SetAxesRatio(1,1)",
+    "b = Slider(-4, 4, 0.5)", "SetValue(b, -4)", "SetCoords(b, 25, 30)", "SetFixed(b, true)",
+    "c = Slider(-2, 5, 0.5)", "SetValue(c, 3)", "SetCoords(c, 25, 80)", "SetFixed(c, true)",
     "f(x) = x^2 + b x + c",
     "SetColor(f, " + BLUE + ")", "SetLineThickness(f, 7)", "ShowLabel(f, false)",
     "V = (-b/2, c - b^2/4)", "SetColor(V, " + RED + ")", "SetPointSize(V, 8)", "SetFixed(V, true)",
     'orig = "y = x² + (" + b + ")x + (" + c + ")"',
-    "SetCoords(orig, -7.6, 8.2)", "SetColor(orig, 0.45, 0.45, 0.45)",
+    "SetCoords(orig, -8.6, 5.5)", "SetColor(orig, 0.45, 0.45, 0.45)",
     'comp = "y = (x - (" + (-b/2) + "))² + (" + (c - b^2/4) + ")"',
-    "SetCoords(comp, -7.6, 7.2)", "SetColor(comp, " + BLUE + ")",
+    "SetCoords(comp, -8.6, 4.7)", "SetColor(comp, " + BLUE + ")",
     'vtx = "頂点 (" + (-b/2) + ", " + (c - b^2/4) + ")"',
-    "SetCoords(vtx, -7.6, 6.2)", "SetColor(vtx, " + RED + ")"
+    "SetCoords(vtx, -8.6, 3.9)", "SetColor(vtx, " + RED + ")"
   ]);
   document.getElementById("s2").classList.add("on");
 }

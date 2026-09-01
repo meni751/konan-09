@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>第4時｜2次関数の決定</title>
+<title>第3時｜2次関数の決定</title>
 <script src="https://www.geogebra.org/apps/deployggb.js"></script>
 <style>
 
@@ -65,7 +65,7 @@
 <body>
 <div class="sheet">
   <header>
-    <p class="eyebrow">第 4 時</p>
+    <p class="eyebrow">第 3 時</p>
     <h1>頂点と通る点から決める</h1>
     <div class="steps"><span class="on">① 予想する</span><span id="s2">② 動かして確かめる</span><span>③ 理由を言葉にする</span></div>
   </header>
@@ -106,7 +106,8 @@ function drop(names){ names.forEach(function(n){ try{ api.deleteObject(n); }catc
 
 function start(){
   run([
-    "ZoomIn(-6, -8, 8, 9)",
+    "ZoomIn(-7, -6, 11, 6)",
+    "SetAxesRatio(1,1)",
     "V = (2, 5)", "SetColor(V, " + RED + ")", "SetPointSize(V, 9)",
     "SetCaption(V, \"頂点\")",
     "A = (-1, -4)", "SetColor(A, " + ORANGE + ")", "SetPointSize(A, 9)",
@@ -115,9 +116,9 @@ function start(){
     "f(x) = k (x - x(V))^2 + y(V)",
     "SetColor(f, " + BLUE + ")", "SetLineThickness(f, 7)", "ShowLabel(f, false)",
     'eq = "y = " + k + "(x - " + x(V) + ")² + " + y(V)',
-    "SetCoords(eq, -5.6, 8.2)", "SetColor(eq, " + BLUE + ")",
+    "SetCoords(eq, -6.6, 5.5)", "SetColor(eq, " + BLUE + ")",
     'ainfo = "a = " + k',
-    "SetCoords(ainfo, -5.6, 7.2)", "SetColor(ainfo, " + RED + ")"
+    "SetCoords(ainfo, -6.6, 4.7)", "SetColor(ainfo, " + RED + ")"
   ]);
   document.getElementById("s2").classList.add("on");
 }

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>第3時｜定義域に制限があるとき</title>
+<title>第2時｜定義域に制限があるとき</title>
 <script src="https://www.geogebra.org/apps/deployggb.js"></script>
 <style>
 
@@ -65,7 +65,7 @@
 <body>
 <div class="sheet">
   <header>
-    <p class="eyebrow">第 3 時</p>
+    <p class="eyebrow">第 2 時</p>
     <h1>定義域を動かしてみる</h1>
     <div class="steps"><span class="on">① 予想する</span><span id="s2">② 動かして確かめる</span><span>③ 理由を言葉にする</span></div>
   </header>
@@ -106,8 +106,9 @@ function drop(names){ names.forEach(function(n){ try{ api.deleteObject(n); }catc
 
 function start(){
   run([
-    "ZoomIn(-4, -6, 8, 8)",
-    "t = Slider(-3, 7, 0.25)", "SetValue(t, 3)", "SetCoords(t, 25, 30)", "SetFixed(t, true)",
+    "ZoomIn(-5, -5, 13, 7)",
+    "SetAxesRatio(1,1)",
+    "t = Slider(0.5, 5, 0.25)", "SetValue(t, 3)", "SetCoords(t, 25, 30)", "SetFixed(t, true)",
     "g(x) = x^2 - 4x + 1",
     "SetColor(g, 0.65, 0.65, 0.65)", "SetLineThickness(g, 3)",
     "SetLineStyle(g, 2)", "ShowLabel(g, false)",
@@ -118,11 +119,11 @@ function start(){
     "axis: x = 2", "SetColor(axis, " + ORANGE + ")", "SetLineThickness(axis, 4)",
     "SetLineStyle(axis, 2)", "ShowLabel(axis, false)",
     'dom = "定義域　0 ≦ x ≦ " + t',
-    "SetCoords(dom, -3.6, 7.2)", "SetColor(dom, " + BLUE + ")",
+    "SetCoords(dom, -4.6, 6.5)", "SetColor(dom, " + BLUE + ")",
     'pos = If(t > 2, "軸 x = 2 は定義域の中", "軸 x = 2 は定義域の外")',
-    "SetCoords(pos, -3.6, 6.2)", "SetColor(pos, " + RED + ")",
+    "SetCoords(pos, -4.6, 5.6)", "SetColor(pos, " + RED + ")",
     'mn = If(t > 2, "最小値は頂点の -3", "最小値は右端の " + (t^2 - 4t + 1))',
-    "SetCoords(mn, -3.6, 5.2)", "SetColor(mn, " + ORANGE + ")"
+    "SetCoords(mn, -4.6, 4.7)", "SetColor(mn, " + ORANGE + ")"
   ]);
   document.getElementById("s2").classList.add("on");
 }
