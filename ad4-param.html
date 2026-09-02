@@ -106,22 +106,22 @@ function drop(names){ names.forEach(function(n){ try{ api.deleteObject(n); }catc
 
 function start(){
   run([
-    "ZoomIn(-4, -6, 14, 6)",
-    "SetAxesRatio(1,1)",
-    "c = Slider(-6, 8, 0.5)", "SetValue(c, 3)", "SetCoords(c, 25, 30)", "SetFixed(c, true)",
+    "ZoomIn(-2, -5, 8, 11)",
+    "c = Slider(0, 5, 0.25)", "SetValue(c, 3)", "SetCoords(c, 25, 30)", "SetFixed(c, true)",
     "f(x) = x^2 - 4x + c",
     "SetColor(f, " + GREY + ")", "SetLineThickness(f, 3)",
     "SetLineStyle(f, 2)", "ShowLabel(f, false)",
     "g = Function(x^2 - 4x + c, 1, 5)",
     "SetColor(g, " + BLUE + ")", "SetLineThickness(g, 9)", "ShowLabel(g, false)",
-    "L = (1, 1 - 4 + c)", "SetColor(L, " + RED + ")", "SetPointSize(L, 7)", "SetFixed(L, true)",
-    "R = (5, 25 - 20 + c)", "SetColor(R, " + RED + ")", "SetPointSize(R, 8)", "SetFixed(R, true)",
+    "L = (1, c - 3)", "SetColor(L, " + RED + ")", "SetPointSize(L, 7)", "SetFixed(L, true)",
+    "R = (5, c + 5)", "SetColor(R, " + RED + ")", "SetPointSize(R, 9)", "SetFixed(R, true)",
+    "V = (2, c - 4)", "SetColor(V, " + ORANGE + ")", "SetPointSize(V, 7)", "SetFixed(V, true)",
     "axis: x = 2", "SetColor(axis, " + ORANGE + ")", "SetLineThickness(axis, 4)",
     "SetLineStyle(axis, 2)", "ShowLabel(axis, false)",
     'info = "定義域 1 ≦ x ≦ 5　　c = " + c',
-    "SetCoords(info, -3.6, 5.4)", "SetColor(info, " + BLUE + ")",
-    'mx = "最大値は x = 5 のとき　c + 5 = " + (c + 5)',
-    "SetCoords(mx, -3.6, 4.5)", "SetColor(mx, " + RED + ")"
+    "SetCoords(info, -1.7, 10.3)", "SetColor(info, " + BLUE + ")",
+    'ans = "最大値は x = 5 のとき　c + 5 = " + (c + 5)',
+    "SetCoords(ans, -1.7, 9.3)", "SetColor(ans, " + RED + ")"
   ]);
   document.getElementById("s2").classList.add("on");
 }
@@ -129,7 +129,7 @@ function start(){
 var SETS = [
   { label: "c を動かす", act: "play" },
   { label: "止める", act: "stop" },
-  { label: "最大値が 8 になる c は？", act: "solve" },
+  { label: "答えを見る（c = 3）", act: "solve" },
   { label: "c = 3 に戻す", act: "reset" }
 ];
 SETS.forEach(function(m, i){
