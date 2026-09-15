@@ -123,7 +123,7 @@ function start(){
     "SetCoords(info, -8.6, 6.3)", "SetColor(info, " + BLUE + ")",
     'ans = "最小値は x = -1 のとき\u3000c - 3 = " + (c - 3)',
     "SetCoords(ans, -8.6, 5.4)", "SetColor(ans, " + RED + ")",
-    'vtx = "頂点は x = -2。定義域の外なので答えにならない"',
+    'vtx = "頂点は x = -2。"',
     "SetCoords(vtx, -8.6, 4.5)", "SetColor(vtx, " + ORANGE + ")"
   ]);
   document.getElementById("s2").classList.add("on");
@@ -132,7 +132,7 @@ function start(){
 var SETS = [
   { label: "c を動かす", act: "play" },
   { label: "止める", act: "stop" },
-  { label: "答えを見る（c = 2）", set: ["SetValue(c, 2)"] },
+  { label: "c = 2 にする", set: ["SetValue(c, 2)"] },
   { label: "c = 4 にする", set: ["SetValue(c, 4)"] }
 ];
 SETS.forEach(function(m, i){
