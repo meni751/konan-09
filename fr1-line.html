@@ -74,7 +74,7 @@
       <p class="q">赤い点をドラッグすると、代入した結果が画面に出ます。教科書 p.113〜115 の例です。</p>
       <div class="cases" id="cases"></div>
       <p class="hint">
-        境界は、<code>&lt;</code> <code>&gt;</code> なら破線、<code>≦</code> <code>≧</code> なら実線で描かれます。
+        境界線はすべて実線で描かれます。含むか含まないかは、不等号を見て 言葉で 判断してください。
         入力欄に自分で <code>y &gt; -x + 2</code> のように打ち込んでも構いません。
       </p>
     </aside>
@@ -142,6 +142,7 @@ function load(i){
     "SetColor(ineq, " + BLUE + ")",
     "SetFilling(ineq, 0.22)",
     "SetLineThickness(ineq, 6)",
+    "SetLineStyle(ineq, 0)",
     "ShowLabel(ineq, false)",
     c.point,
     "SetColor(P, " + RED + ")",

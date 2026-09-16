@@ -153,6 +153,7 @@ function load(i){
     "SetColor(ineq, " + BLUE + ")",
     "SetFilling(ineq, 0.22)",
     "SetLineThickness(ineq, 6)",
+    "SetLineStyle(ineq, 0)",
     "ShowLabel(ineq, false)",
     'judge = If(' + c.test + ', "○ 成り立つ → この側が領域", "× 成り立たない → 反対側")',
     "SetCoords(judge, " + (c.view[0] + 0.4) + ", " + (c.view[3] - 0.6) + ")",
