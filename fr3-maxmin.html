@@ -124,8 +124,11 @@ function base(){
     "r: x >= 0 && y >= 0 && 2*x + y <= 8 && 2*x + 3*y <= 12",
     "SetColor(r, " + ORANGE + ")",
     "SetFilling(r, 0.45)",
-    "SetLineThickness(r, 5)",
-    "SetLineStyle(r, 0)",
+    "SetLineThickness(r, 0)",
+    "e1: 2*x + y = 8", "SetColor(e1, " + ORANGE + ")",
+    "SetLineThickness(e1, 5)", "SetLineStyle(e1, 0)", "ShowLabel(e1, false)",
+    "e2: 2*x + 3*y = 12", "SetColor(e2, " + ORANGE + ")",
+    "SetLineThickness(e2, 5)", "SetLineStyle(e2, 0)", "ShowLabel(e2, false)",
     "ShowLabel(r, false)"
   ]);
 }
