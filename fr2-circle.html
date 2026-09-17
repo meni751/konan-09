@@ -117,27 +117,27 @@ function start(){
 
 var CASES = [
   { label: "例16　x²+(y−2)² ≦ 4",
-    ineq: "ineq: x^2 + (y-2)^2 <= 4", bound: ["bd: x^2 + (y-2)^2 = 4"],
+    ineq: "ineq: x^2 + (y-2)^2 <= 4", bound: ["q1: x^2 + (y-2)^2 = 4"],
     test: "x(P)^2 + (y(P)-2)^2 <= 4",
     view: [-6,-1,6,7] },
   { label: "練習38(1)　x²+y² < 4",
-    ineq: "ineq: x^2 + y^2 < 4", bound: ["bd: x^2 + y^2 = 4"],
+    ineq: "ineq: x^2 + y^2 < 4", bound: ["q1: x^2 + y^2 = 4"],
     test: "x(P)^2 + y(P)^2 < 4",
     view: [-6,-4,6,4] },
   { label: "練習38(2)　x²+y² ≧ 6",
-    ineq: "ineq: x^2 + y^2 >= 6", bound: ["bd: x^2 + y^2 = 6"],
+    ineq: "ineq: x^2 + y^2 >= 6", bound: ["q1: x^2 + y^2 = 6"],
     test: "x(P)^2 + y(P)^2 >= 6",
     view: [-6,-4,6,4] },
   { label: "練習38(4)　x²+y²+4x ≦ 0",
-    ineq: "ineq: x^2 + y^2 + 4*x <= 0", bound: ["bd: x^2 + y^2 + 4*x = 0"],
+    ineq: "ineq: x^2 + y^2 + 4*x <= 0", bound: ["q1: x^2 + y^2 + 4*x = 0"],
     test: "x(P)^2 + y(P)^2 + 4*x(P) <= 0",
     view: [-9,-4,9,8] },
   { label: "例17　連立（p.116）",
-    ineq: "ineq: x + y - 2 > 0 && x - y < 0", bound: ["bd: x + y - 2 = 0", "bd2: x - y = 0"],
+    ineq: "ineq: x + y - 2 > 0 && x - y < 0", bound: ["q1: x + y - 2 = 0", "q2: x - y = 0"],
     test: "x(P) + y(P) - 2 > 0 && x(P) - y(P) < 0",
     view: [-4.5,-3,7.5,5] },
   { label: "練習40(1)　円と直線の連立",
-    ineq: "ineq: x^2 + y^2 < 25 && 3*x - y + 3 < 0", bound: ["bd: x^2 + y^2 = 25", "bd2: 3*x - y + 3 = 0"],
+    ineq: "ineq: x^2 + y^2 < 25 && 3*x - y + 3 < 0", bound: ["q1: x^2 + y^2 = 25", "q2: 3*x - y + 3 = 0"],
     test: "x(P)^2 + y(P)^2 < 25 && 3*x(P) - y(P) + 3 < 0",
     view: [-10.5,-7,10.5,7] }
 ];
@@ -154,11 +154,15 @@ function load(i){
     "SetFilling(ineq, 0.22)",
     "SetLineThickness(ineq, 0)",
     "ShowLabel(ineq, false)",
-  ].concat(c.bound).concat([
-    "SetColor(bd, " + BLUE + ")", "SetLineThickness(bd, 6)",
-    "SetLineStyle(bd, 0)", "ShowLabel(bd, false)",
-    "SetColor(bd2, " + BLUE + ")", "SetLineThickness(bd2, 6)",
-    "SetLineStyle(bd2, 0)", "ShowLabel(bd2, false)",
+  ].concat(c.bound).concat(
+    c.bound.map(function(b, k){
+      var nm = "q" + (k + 1);
+      return ["SetColor(" + nm + ", " + BLUE + ")",
+              "SetLineThickness(" + nm + ", 6)",
+              "SetLineStyle(" + nm + ", 0)",
+              "ShowLabel(" + nm + ", false)"];
+    }).reduce(function(a, b){ return a.concat(b); }, [])
+  ).concat([
     'judge = If(' + c.test + ', "○ 成り立つ → この側が領域", "× 成り立たない → 反対側")',
     "SetCoords(judge, " + (c.view[0] + 0.4) + ", " + (c.view[3] - 0.6) + ")",
     "SetColor(judge, 0.55, 0.29, 0.08)"
